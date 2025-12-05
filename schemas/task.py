@@ -1,12 +1,12 @@
-from sqlalchemy import Column, Integer, String, DateTime
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Integer, String, DateTime
+from database.db import Base
 from datetime import datetime
-
-Base = declarative_base()
+from sqlalchemy.orm import Mapped, mapped_column
 
 class TaskSchema(Base):
     __tablename__ = "tasks"
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    description = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str]
+    description: Mapped[str]
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)

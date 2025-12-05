@@ -6,10 +6,8 @@ class TaskAddModel(BaseModel):
     title: str
     description: str
 
-class TaskModel(BaseModel): 
+class TaskModel(TaskAddModel): 
     id: Optional[int] = None
-    title: str
-    description: str
     created_at: Optional[datetime] = None
     
     class Config:
