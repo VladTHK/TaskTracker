@@ -1,7 +1,7 @@
-from fastapi import Query, Depends, APIRouter, HTTPException
+from fastapi import Query, Depends, APIRouter, HTTPException, status, Path
 from schemas import Task
 from typing import Annotated
-from models import TaskCreate, TaskRead 
+from models import TaskCreate, TaskRead
 from database.db import get_session
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -14,6 +14,30 @@ async def add_task(task_data: TaskCreate, session: AsyncSession = Depends(get_se
     session.add(new_task)
     await session.commit()
     return [new_task]
+
+@router.put("/tasks/{task_id}", response_model=TaskRead, tags=['Tasks'])
+async def update_task(
+    task_id: Annotated[int, Path(ge=1, description="Task ID to update")],
+    task_update: TaskCreate, session: AsyncSession = Depends(get_session)
+):
+    stmt = select(Task).where(Task.id == task_id)
+    result = await session.execute(stmt)
+    task = result.scalars().first()
+    
+    if task is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Task not found"
+        )    
+
+    update_data = task_update.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(task, field, value)
+        
+    await session.commit()
+    await session.refresh(task)
+    return task
+    
 
 @router.get("/tasks/", response_model=list[TaskRead], tags=['Tasks'])
 async def get_tasks(
