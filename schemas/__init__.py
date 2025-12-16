@@ -1,3 +1,3 @@
-from .task import TaskSchema
+from .task import Task
 
-__all__ = ["TaskSchema"]
+__all__ = ["Task"]

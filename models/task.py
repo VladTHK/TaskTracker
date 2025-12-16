@@ -1,12 +1,12 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Optional
 
-class TaskAddModel(BaseModel): 
-    title: str
-    description: str
+class TaskCreate(BaseModel): 
+    title: str = Field(..., min_length=1, max_length=200)
+    description: Optional[str] = Field(None, max_length=1000)
 
-class TaskModel(TaskAddModel): 
+class TaskRead(TaskCreate): 
     id: Optional[int] = None
     created_at: Optional[datetime] = None
     

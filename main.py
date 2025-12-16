@@ -1,5 +1,5 @@
-from fastapi import FastAPI, Depends
-from database.db import engine, get_session, Base
+from fastapi import FastAPI
+from database import engine, Base
 
 from repositories.routers import router as router_task
 
