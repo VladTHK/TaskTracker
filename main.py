@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from database import engine, Base
 
-from repositories.routers import router as router_task
+from routes import router
 
 
 app = FastAPI(title="Task Tracker")
@@ -12,4 +12,4 @@ async def startup():
         await conn.run_sync(Base.metadata.create_all)
         
         
-app.include_router(router_task)
+app.include_router(router)

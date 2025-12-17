@@ -1,2 +1,2 @@
-from .task import TaskCreate, TaskRead
-__all__ = ["TaskCreate", "TaskRead"]
+from .task import TaskCreate, TaskRead, TaskUpdate
+__all__ = ["TaskCreate", "TaskRead", "TaskUpdate"]
